@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusHub | Student Portal</title>
+  <style>
+    :root { --navy:#14213d; --blue:#2563eb; --pale:#eff6ff; --ink:#172033; --muted:#64748b; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; font-family: Inter,Segoe UI,Arial,sans-serif; color:var(--ink);
+      background:linear-gradient(135deg,#eaf2ff 0%,#f8fafc 48%,#e9f7f2 100%); display:grid; place-items:center; padding:24px; }
+    .shell { width:min(960px,100%); display:grid; grid-template-columns:1fr 1fr; background:white; border-radius:24px; overflow:hidden;
+      box-shadow:0 24px 70px rgba(20,33,61,.14); }
+    .brand { background:var(--navy); color:white; padding:48px 40px; display:flex; flex-direction:column; justify-content:space-between; min-height:560px; }
+    .logo { display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.3px; }
+    .mark { display:grid; place-items:center; width:42px; height:42px; border-radius:13px; background:#60a5fa; color:#10203d; font-size:20px; }
+    .brand h1 { font-size:38px; line-height:1.12; margin:42px 0 16px; }
+    .brand p { color:#cbd5e1; line-height:1.7; margin:0; }
+    .tag { font-size:12px; color:#bfdbfe; letter-spacing:1.5px; text-transform:uppercase; }
+    .panel { padding:48px 42px; display:flex; flex-direction:column; justify-content:center; }
+    .panel h2 { margin:0 0 8px; font-size:28px; }
+    .sub { margin:0 0 30px; color:var(--muted); line-height:1.5; }
+    label { display:block; margin:16px 0 8px; font-size:14px; font-weight:650; }
+    input { width:100%; border:1px solid #cbd5e1; border-radius:10px; padding:13px 14px; font-size:15px; outline:none; }
+    input:focus { border-color:var(--blue); box-shadow:0 0 0 3px #dbeafe; }
+    button { border:0; border-radius:10px; background:var(--blue); color:white; padding:14px 16px; margin-top:22px; font-size:15px; font-weight:700; cursor:pointer; }
+    button:hover { background:#1d4ed8; }
+    .hint { background:var(--pale); border:1px solid #dbeafe; padding:12px 14px; border-radius:10px; margin-top:18px; color:#334155; font-size:12px; line-height:1.6; }
+    .message { display:none; border-radius:10px; padding:12px 14px; margin-top:16px; font-size:14px; line-height:1.5; }
+    .error { display:block; color:#991b1b; background:#fef2f2; border:1px solid #fecaca; }
+    .success { display:block; color:#166534; background:#f0fdf4; border:1px solid #bbf7d0; }
+    .welcome { display:none; }
+    .welcome .tile { margin-top:20px; padding:18px; border:1px solid #dbeafe; background:#f8fbff; border-radius:14px; }
+    .welcome .tile strong { display:block; margin-bottom:6px; }
+    .welcome button { background:#334155; }
+    footer { margin-top:24px; text-align:center; color:#94a3b8; font-size:12px; }
+    @media (max-width:720px) { .shell { grid-template-columns:1fr; } .brand { min-height:260px; padding:30px; } .brand h1 { font-size:30px; margin:25px 0 12px; } .panel { padding:32px 26px; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="brand">
+      <div class="logo"><span class="mark">C</span><span>CampusHub</span></div>
+      <div>
+        <div class="tag">Student portal</div>
+        <h1>Your campus life, organized.</h1>
+        <p>A simple portal to access your student dashboard and keep your academic activities in one place.</p>
+      </div>
+      <p style="font-size:12px;color:#94a3b8">Demo website for automation testing practice.</p>
+    </section>
+    <section class="panel">
+      <div id="loginView">
+        <h2>Welcome back</h2>
+        <p class="sub">Sign in to continue to your dashboard.</p>
+        <form id="loginForm">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" placeholder="student@campushub.test" autocomplete="username" />
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+          <button id="loginButton" type="submit">Sign in</button>
+        </form>
+        <div id="message" class="message" role="alert" aria-live="polite"></div>
+        <div class="hint"><strong>Demo account for testing</strong><br>Email: student@campushub.test<br>Password: Campus123!</div>
+      </div>
+      <div id="welcomeView" class="welcome">
+        <h2 id="welcomeTitle">Login successful</h2>
+        <p class="sub">You are signed in to CampusHub.</p>
+        <div class="tile"><strong>Student dashboard</strong><span>Your account session is active. This page confirms successful authentication.</span></div>
+        <button id="logoutButton" type="button">Sign out</button>
+      </div>
+      <footer>© 2026 CampusHub · Automation Testing Demo</footer>
+    </section>
+  </main>
+  <script>
+    const validEmail = "student@campushub.test";
+    const validPassword = "Campus123!";
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+    const loginView = document.getElementById("loginView");
+    const welcomeView = document.getElementById("welcomeView");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (email === validEmail && password === validPassword) {
+        message.className = "message success";
+        message.textContent = "Login successful.";
+        loginView.style.display = "none";
+        welcomeView.style.display = "block";
+      } else {
+        message.className = "message error";
+        message.textContent = "Invalid email or password. Please try again.";
+      }
+    });
+
+    document.getElementById("logoutButton").addEventListener("click", function () {
+      welcomeView.style.display = "none";
+      loginView.style.display = "block";
+      form.reset();
+      message.className = "message";
+      message.textContent = "";
+    });
+  </script>
+</body>
+</html>
